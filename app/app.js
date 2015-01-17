@@ -1,4 +1,4 @@
-var app = angular.module('todoApp', ['ngRoute', 'ngCookies']);
+var app = angular.module('todoApp', ['ngRoute', 'ngCookies', 'ngMock']);
 
 app.controller('loginController', function ($scope, $http, $cookieStore, $location) {
 	
