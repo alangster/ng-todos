@@ -18,6 +18,7 @@ module.exports = function(config) {
       '../angular.min.js',
       '../angular-route.min.js',
       '../angular-cookies.min.js',
+      '../angular-resource.min.js',
       'angular-mocks.js',
       '../*.js',
       '../*.*.js',

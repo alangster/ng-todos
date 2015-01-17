@@ -10,6 +10,7 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 
 		$http.post("http://recruiting-api.nextcapital.com/users/sign_in", data)
 			.success(function(response) {
+				scope.suc = "woo";
 				successResponse(response);
 			})
 			.error(function(response) {
