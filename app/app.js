@@ -52,7 +52,7 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 
 });
 
-app.controller('todosController', function ($scope, $http, $cookieStore, $location) {
+app.controller('todosController', function ($scope, $rootScope, $http, $cookieStore, $location) {
 
 	var url = 'http://recruiting-api.nextcapital.com/users/';
 
@@ -72,11 +72,15 @@ app.controller('todosController', function ($scope, $http, $cookieStore, $locati
 		}
 	};
 
+	$rootScope.$on('todoCreated', function(context, data) {
+		$scope.todos.push(data);
+	})
+
 	init();
 
 });
 
-app.controller('createTodoController', function ($scope, $http, $cookieStore) {
+app.controller('createTodoController', function ($scope, $rootScope, $http, $cookieStore) {
 
 	var url = 'http://recruiting-api.nextcapital.com/users/';
 
@@ -85,7 +89,8 @@ app.controller('createTodoController', function ($scope, $http, $cookieStore) {
 		var data = { 'api_token': $cookieStore.get('api_token'), 'todo' : { 'description': $scope.newTodo.description } };
 		$http.post(createUrl, data)
 			.success(function(response) {
-				console.log(response);
+				$scope.newTodo.description = "";
+				$rootScope.$broadcast('todoCreated', response);
 			})
 			.error(function(response) {
 				console.log(response);
