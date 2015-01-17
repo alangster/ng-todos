@@ -1,0 +1,9 @@
+<div ng-controller="todosController">
+
+	<form name="todoForm" ng-controller="createTodoController" ng-submit="createTodo()">
+		<input name="description" ng-model="newTodo.description" type="text" placeholder="What's your todo?">
+		<input type="submit" value="Put it on my list!">
+	</form>
+	
+</div>
+

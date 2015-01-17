@@ -44,9 +44,29 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 	function successResponse(response) {
 		$cookieStore.put('key', response.api_token);
 		$cookieStore.put('todos', response.todos);
+		$cookieStore.put('user_id', response.id);
 		$location.path('/todos');
 	};
 
+});
+
+app.controller('todosController', function ($scope, $http, $cookieStore, $location) {
+
+	function init() {
+		if (!$cookieStore.get('user_id')) {
+			$location.path('/');
+		}
+	}
+
+	init();
+
+});
+
+app.controller('createTodoController', function ($scope, $http, $cookieStore) {
+
+	$scope.createTodo = function() {
+		console.log($scope.description);
+	}
 
 });
 
