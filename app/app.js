@@ -14,7 +14,6 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 
 		$http.post(signInUrl, data)
 			.success(function(response) {
-				console.log(response);
 				successResponse(response);
 			})
 			.error(function(response) {
@@ -37,7 +36,6 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 				successResponse(response);
 			})
 			.error(function(response) {
-				console.log(response);
 				$scope.signUpForm.errors = response.email;
 			});
 
@@ -56,11 +54,23 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 
 app.controller('todosController', function ($scope, $http, $cookieStore, $location) {
 
+	var url = 'http://recruiting-api.nextcapital.com/users/';
+
 	function init() {
 		if (!$cookieStore.get('user_id')) {
 			$location.path('/');
+		} else {
+			var todosUrl = url + $cookieStore.get('user_id') + '/todos.json?api_token=' + $cookieStore.get('api_token');
+
+			$http.get(todosUrl)
+				.success(function(response) {
+					$scope.todos = response;
+				})
+				.error(function(response) {
+					console.log(response);
+				})
 		}
-	}
+	};
 
 	init();
 
@@ -68,7 +78,7 @@ app.controller('todosController', function ($scope, $http, $cookieStore, $locati
 
 app.controller('createTodoController', function ($scope, $http, $cookieStore) {
 
-	var url = 'http://recruiting-api.nextcapital.com/users/'
+	var url = 'http://recruiting-api.nextcapital.com/users/';
 
 	$scope.createTodo = function() {
 		var createUrl = url + $cookieStore.get('user_id') + '/todos';
