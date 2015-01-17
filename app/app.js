@@ -2,14 +2,19 @@ var app = angular.module('todoApp', ['ngRoute', 'ngCookies']);
 
 app.controller('loginController', function ($scope, $http, $cookieStore, $location) {
 	
+	var url = "http://recruiting-api.nextcapital.com/users";
+
 	$scope.login = function () {
 		var data = {
 			"email": $scope.user.email,
 			"password": $scope.user.password
 		};
 
-		$http.post("http://recruiting-api.nextcapital.com/users/sign_in", data)
+		var signInUrl = url + '/sign_in';
+
+		$http.post(signInUrl, data)
 			.success(function(response) {
+				console.log(response);
 				successResponse(response);
 			})
 			.error(function(response) {
@@ -27,7 +32,7 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 			"password": $scope.newUser.password
 		};
 
-		$http.post("http://recruiting-api.nextcapital.com/users", data)
+		$http.post(url, data)
 			.success(function(response) {
 				successResponse(response);
 			})
@@ -42,8 +47,7 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 	};
 
 	function successResponse(response) {
-		$cookieStore.put('key', response.api_token);
-		$cookieStore.put('todos', response.todos);
+		$cookieStore.put('api_token', response.api_token);
 		$cookieStore.put('user_id', response.id);
 		$location.path('/todos');
 	};
@@ -64,8 +68,18 @@ app.controller('todosController', function ($scope, $http, $cookieStore, $locati
 
 app.controller('createTodoController', function ($scope, $http, $cookieStore) {
 
+	var url = 'http://recruiting-api.nextcapital.com/users/'
+
 	$scope.createTodo = function() {
-		console.log($scope.description);
+		var createUrl = url + $cookieStore.get('user_id') + '/todos';
+		var data = { 'api_token': $cookieStore.get('api_token'), 'todo' : { 'description': $scope.newTodo.description } };
+		$http.post(createUrl, data)
+			.success(function(response) {
+				console.log(response);
+			})
+			.error(function(response) {
+				console.log(response);
+			});
 	}
 
 });
