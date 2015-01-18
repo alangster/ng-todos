@@ -72,6 +72,14 @@ app.controller('todosController', function ($scope, $rootScope, $http, $cookieSt
 		}
 	};
 
+	$scope.editDescription = function(todo) {
+		console.log(todo);
+	};
+
+	$scope.toggleCompletion = function(todo) {
+		console.log(todo);
+	}
+
 	$rootScope.$on('todoCreated', function(context, data) {
 		$scope.todos.push(data);
 	})
