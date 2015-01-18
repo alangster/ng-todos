@@ -72,6 +72,8 @@ app.controller('todosController', function ($scope, $rootScope, $http, $cookieSt
 		}
 	};
 
+	init();
+
 	function todoData(todo) {
 		return {'api_token': $cookieStore.get('api_token'), 'todo': { 'description': todo.description, 'is_complete': todo.is_complete } }
 	}
@@ -87,18 +89,20 @@ app.controller('todosController', function ($scope, $rootScope, $http, $cookieSt
 			})
 	}
 
+	$scope.storeOriginal = function(todo) {
+		$scope.original = angular.extend({}, todo);
+	};
+
+	$scope.blurred = function(todo) {
+		todo.description = $scope.original.description;
+	};
+
 	$scope.editDescription = function(todo) {
-		//
-		console.log(todo);
-		//
 		sendEditedTodo(todo);
 	};
 
 	$scope.toggleCompletion = function(todo) {
 		todo.is_complete = !todo.is_complete;
-		//
-		console.log(todo);
-		//
 		sendEditedTodo(todo);
 	}
 
@@ -106,7 +110,6 @@ app.controller('todosController', function ($scope, $rootScope, $http, $cookieSt
 		$scope.todos.push(data);
 	})
 
-	init();
 
 });
 

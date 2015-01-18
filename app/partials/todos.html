@@ -8,9 +8,9 @@
 	<div>
 		<ul>
 			<li ng-repeat="todo in todos">
-				<a href ng-click="todo.edit = true" ng-hide="todo.edit">{{ todo.description }}</a>
+				<a href ng-click="todo.edit = true; storeOriginal(todo)" ng-hide="todo.edit">{{ todo.description }}</a>
 				<form name="editTodo" ng-submit="todo.edit = false; editDescription(todo)">
-					<input type="text" ng-show="todo.edit" ng-model="todo.description" />
+					<input type="text" ng-show="todo.edit" ng-model="todo.description" ng-blur="todo.edit = false; blurred(todo)" />
 				</form>
 				<input type="checkbox" ng-model="todo.is_complete" ng-click="toggleCompletion(todo)">
 			</li>
