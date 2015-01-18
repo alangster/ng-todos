@@ -54,13 +54,13 @@ app.controller('loginController', function ($scope, $http, $cookieStore, $locati
 
 app.controller('todosController', function ($scope, $rootScope, $http, $cookieStore, $location) {
 
-	var url = 'http://recruiting-api.nextcapital.com/users/';
+	var url = 'http://recruiting-api.nextcapital.com/users/' + $cookieStore.get('user_id') + '/todos';
 
 	function init() {
 		if (!$cookieStore.get('user_id')) {
 			$location.path('/');
 		} else {
-			var todosUrl = url + $cookieStore.get('user_id') + '/todos.json?api_token=' + $cookieStore.get('api_token');
+			var todosUrl = url + '.json?api_token=' + $cookieStore.get('api_token');
 
 			$http.get(todosUrl)
 				.success(function(response) {
@@ -72,11 +72,44 @@ app.controller('todosController', function ($scope, $rootScope, $http, $cookieSt
 		}
 	};
 
+	init();
+
+	function todoData(todo) {
+		return {'api_token': $cookieStore.get('api_token'), 'todo': { 'description': todo.description, 'is_complete': todo.is_complete } }
+	}
+
+	function sendEditedTodo(todo) {
+		var editUrl = url + '/' + todo.id
+		$http.put(editUrl, todoData(todo))
+			.success(function(response) {
+				console.log(response);
+			})
+			.error(function(response) {
+				console.log(response);
+			})
+	}
+
+	$scope.storeOriginal = function(todo) {
+		$scope.original = angular.extend({}, todo);
+	};
+
+	$scope.blurred = function(todo) {
+		todo.description = $scope.original.description;
+	};
+
+	$scope.editDescription = function(todo) {
+		sendEditedTodo(todo);
+	};
+
+	$scope.toggleCompletion = function(todo) {
+		todo.is_complete = !todo.is_complete;
+		sendEditedTodo(todo);
+	}
+
 	$rootScope.$on('todoCreated', function(context, data) {
 		$scope.todos.push(data);
 	})
 
-	init();
 
 });
 
