@@ -3,16 +3,17 @@
 	<form name="todoForm" ng-controller="createTodoController" ng-submit="createTodo()">
 		<input name="description" ng-model="newTodo.description" type="text" placeholder="What's your todo?">
 		<input type="submit" value="Put it on my list!">
+		<h3>{{ notSavedError }}</h3>
 	</form>
+
+	<h2>{{ fetchingError }}</h2>
 
 	<div>
 		<ul>
 			<li ng-repeat="todo in todos">
-				<a href ng-click="todo.edit = true; storeOriginal(todo)" ng-hide="todo.edit">{{ todo.description }}</a>
-				<form name="editTodo" ng-submit="todo.edit = false; editDescription(todo)">
-					<input type="text" ng-show="todo.edit" ng-model="todo.description" ng-blur="todo.edit = false; blurred(todo)" />
-				</form>
+				<input type="text" ng-click="storeOriginal(todo)" ng-model="todo.description" save-change="editDescription(todo)" ng-blur="editDescription(todo)" /> 
 				<input type="checkbox" ng-model="todo.is_complete" ng-click="toggleCompletion(todo)">
+				<h3>{{ todo.editError }}</h3>
 			</li>
 
 		</ul>
