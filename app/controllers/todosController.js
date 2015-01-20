@@ -88,6 +88,27 @@
 			return predicate(todo);
 		}
 
+		$scope.moveUp = function(todo) {
+			var index = $scope.todos.indexOf(todo);
+			if (index === 0) {
+				return;
+			}
+			var tmp = $scope.todos[index - 1];
+			$scope.todos[index - 1] = todo;
+			$scope.todos[index] = tmp;
+		}
+
+		$scope.moveDown = function(todo) {
+			var index = $scope.todos.indexOf(todo);
+			if (index === $scope.todos.length - 1) {
+				return;
+			}
+			var tmp = $scope.todos[index + 1];
+			$scope.todos[index + 1] = todo;
+			$scope.todos[index] = tmp;
+
+		}
+
 
 	});
 
