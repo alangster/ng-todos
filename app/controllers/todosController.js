@@ -2,7 +2,7 @@
 
 	var app = angular.module('todoApp');
 
-	app.controller('todosController', function ($scope, $rootScope, $http, $cookieStore, $location) {
+	app.controller('todosController', function ($scope, $rootScope, $http, $cookieStore, $location, $filter) {
 
 		var url = 'http://recruiting-api.nextcapital.com/users/' + $cookieStore.get('user_id') + '/todos';
 
@@ -61,6 +61,32 @@
 		$rootScope.$on('todoCreated', function(context, data) {
 			$scope.todos.push(data);
 		})
+
+		var predicate = function(input) {
+			return input;
+		}
+
+		$scope.displayAll = function() {
+			predicate = function(input) {
+				return input;
+			}
+		}
+
+		$scope.displayComplete = function() {
+			predicate = function(input) {
+				return input.is_complete;
+			}
+		}
+
+		$scope.displayIncomplete = function() {
+			predicate = function(input) {
+				return !input.is_complete;
+			}
+		}
+
+		$scope.status = function(todo) {
+			return predicate(todo);
+		}
 
 
 	});

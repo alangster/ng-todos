@@ -10,8 +10,13 @@
 
 	<div>
 		<input type="text" ng-model="query" />
+		<a ng-href="" ng-model="all" ng-click="displayAll()">All Todos</a>
+		<a ng-href="" ng-model="complete" ng-click="displayComplete()">Complete</a>
+		<a ng-href="" ng-model="incomplete" ng-click="displayIncomplete()">Incomplete</a>
+
+
 		<ul>
-			<li ng-repeat="todo in todos | filter:query">
+			<li ng-repeat="todo in todos | filter:query | filter:status">
 				<input type="text" ng-click="storeOriginal(todo)" ng-model="todo.description" save-change="editDescription(todo)" ng-blur="editDescription(todo)" /> 
 				<input type="checkbox" ng-model="todo.is_complete" ng-click="toggleCompletion(todo)">
 				<h3>{{ todo.editError }}</h3>
