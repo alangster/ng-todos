@@ -15,7 +15,9 @@
 		<button ng-click="displayIncomplete()">Incomplete</button>
 
 		<ul ng-model="todos">
-			<li ng-repeat="todo in todos | filter:query | filter:status">
+			<li ng-repeat="todo in todos | filter:query | filter:status"
+					 moveable
+					 ng-model="todo">
 				<div class="todo-border">
 					<input type="text" 
 					 ng-click="storeOriginal(todo)" 
@@ -23,7 +25,7 @@
 					 move-up="moveUp(todo)" 
 					 move-down="moveDown(todo)" 
 					 save-change="editDescription(todo)" 
-					 ng-blur="editDescription(todo)" /> 
+					 ng-blur="editDescription(todo)">
 					<input type="checkbox" ng-model="todo.is_complete" ng-click="toggleCompletion(todo)">
 					<h3>{{ todo.editError }}</h3>
 				</div>

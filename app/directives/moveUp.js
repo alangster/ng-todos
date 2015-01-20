@@ -7,7 +7,6 @@
 		return function(scope, elem, attrs) {
 			elem.bind('keydown', function(event) {
 				if (event.keyCode === upKey) {
-					console.log("moveUp");
 					scope.$apply(attrs.moveUp);
 				}
 			});

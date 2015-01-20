@@ -62,6 +62,13 @@
 			$scope.todos.push(data);
 		})
 
+
+		$rootScope.$on('moveUp', function(context, todo) {
+			console.log(todo);
+			console.log("got it");
+			moveUp(todo);
+		})
+
 		var predicate = function(input) {
 			return input;
 		}
@@ -88,7 +95,18 @@
 			return predicate(todo);
 		}
 
-		$scope.moveUp = function(todo) {
+		// $scope.moveUp = function(todo) {
+		// 	var index = $scope.todos.indexOf(todo);
+		// 	if (index === 0) {
+		// 		return;
+		// 	}
+		// 	var tmp = $scope.todos[index - 1];
+		// 	$scope.todos[index - 1] = todo;
+		// 	$scope.todos[index] = tmp;
+		// }
+
+		var moveUp = function(todo) {
+			console.log(todo);
 			var index = $scope.todos.indexOf(todo);
 			if (index === 0) {
 				return;
@@ -106,7 +124,6 @@
 			var tmp = $scope.todos[index + 1];
 			$scope.todos[index + 1] = todo;
 			$scope.todos[index] = tmp;
-
 		}
 
 
