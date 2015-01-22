@@ -1,8 +1,17 @@
 <div ng-controller="todosController">
 
-	<form name="todoForm" ng-controller="createTodoController" ng-submit="createTodo()">
-		<input name="description" ng-model="newTodo.description" type="text" placeholder="What's your todo?">
-		<input type="submit" value="Put it on my list!">
+	<form 
+	  name="todoForm" 
+	  ng-controller="createTodoController" 
+	  ng-submit="createTodo()">
+		<input 
+		  name="description" 
+		  ng-model="newTodo.description" 
+		  type="text" 
+		  placeholder="What's your todo?" />
+		<input 
+		  type="submit" 
+		  value="Put it on my list!" />
 		<h3>{{ notSavedError }}</h3>
 	</form>
 
@@ -14,21 +23,25 @@
 		<button ng-click="displayComplete()">Complete</button>
 		<button ng-click="displayIncomplete()">Incomplete</button>
 
-		<ul ng-model="todos">
+		<ul ui-sortable="sortableTodos" ng-model="todos">
 			<li ng-repeat="todo in todos | filter:query | filter:status"
-					 moveable
-					 ng-model="todo">
-				<div class="todo-border">
-					<input type="text" 
-					 ng-click="storeOriginal(todo)" 
-					 ng-model="todo.description" 
-					 move-up="moveUp(todo)" 
-					 move-down="moveDown(todo)" 
-					 save-change="editDescription(todo)" 
-					 ng-blur="editDescription(todo)">
-					<input type="checkbox" ng-model="todo.is_complete" ng-click="toggleCompletion(todo)">
-					<h3>{{ todo.editError }}</h3>
-				</div>
+					ng-model="todo">
+				<p 
+					ng-click="storeOriginal(todo); todo.editing=true"
+					ng-hide="todo.editing">
+					 {{todo.description}}
+				</p>
+				<input 
+					ng-focus="true"
+					type="text"  
+					ng-show="todo.editing"
+					ng-model="todo.description" 
+					save-change="todo.editing=false; editDescription(todo)" 
+					ng-blur="todo.editing=false; editDescription(todo)" />
+				<input type="checkbox" 
+					ng-model="todo.is_complete" 
+					ng-click="toggleCompletion(todo)" />
+				<h3>{{ todo.editError }}</h3>
 			</li>
 
 		</ul>

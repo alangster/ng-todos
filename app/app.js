@@ -1,14 +1,7 @@
 (function () {
 
-	var app = angular.module('todoApp', ['ngRoute', 'ngCookies']);
+	var app = angular.module('todoApp', ['ngRoute', 'ngCookies', 'ui.sortable']);
 	
-	app.controller('bigController', function ($scope, $rootScope) {
-		$scope.moveUp = function(todo) {
-			console.log(todo);
-			$rootScope.$broadcast('moveUp', todo);
-		}
-	});
-
 	app.config(function ($routeProvider) {
 		$routeProvider
 			.when('/', 
