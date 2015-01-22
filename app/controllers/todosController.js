@@ -5,8 +5,17 @@
 	app.controller('todosController', function ($scope, $rootScope, $http, $cookieStore, $location, $filter) {
 
 		var url = 'http://recruiting-api.nextcapital.com/users/' + $cookieStore.get('user_id') + '/todos';
+		var completedTodoCount, incompleteTodoCount;
 
-		function init() {
+		function countComplete() {
+			var count = 0;
+			$scope.todos.forEach(function(val, ind) {
+				if (val.is_complete) {count++};
+			});
+			return count;
+		};
+
+		(function init() {
 			if (!$cookieStore.get('user_id')) {
 				$location.path('/');
 			} else {
@@ -14,15 +23,20 @@
 
 				$http.get(todosUrl)
 					.success(function(response) {
+						console.log(response);
 						$scope.todos = response;
+						completedTodoCount = countComplete();
+						incompleteTodoCount = ($scope.todos.length) - completedTodoCount;
+						console.log('length: ' + $scope.todos.length);
+						console.log('complete: ' + completedTodoCount);
+						console.log('incomplete: ' + incompleteTodoCount);
+						makeChart();
 					})
 					.error(function(response) {
 						$scope.fetchingError = "Unable to fetch todos. Try again later.";
 					})
 			}
-		};
-
-		init();
+		})();
 
 		function todoData(todo) {
 			return {'api_token': $cookieStore.get('api_token'), 'todo': { 'description': todo.description, 'is_complete': todo.is_complete } }
@@ -93,6 +107,21 @@
 			cursor: 'move',
 			tolerance: 'pointer'
 		}
+
+		function makeChart() {
+			$scope.highchartsNG = {
+				options: {
+					  chart: {
+							type: 'bar'
+					}
+				},
+				series: [{
+					data: [completedTodoCount, incompleteTodoCount]
+				}],
+			}	
+		}
+
+			
 
 	});
 
