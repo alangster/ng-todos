@@ -1,6 +1,6 @@
 (function () {
 
-	var app = angular.module('todoApp', ['ngRoute', 'ngCookies']);
+	var app = angular.module('todoApp', ['ngRoute', 'ngCookies', 'ui.sortable']);
 	
 	app.config(function ($routeProvider) {
 		$routeProvider
